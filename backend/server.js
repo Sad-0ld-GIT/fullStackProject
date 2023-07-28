@@ -13,7 +13,7 @@ let db=mysql.createConnection(
     host:"localhost",
     user:"root",
     password:"root",
-    database:"nbs1"
+    database:"nbs"
 });
 
 db.connect()

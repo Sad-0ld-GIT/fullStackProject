@@ -20,4 +20,4 @@ function NewEmployee(){
     )
 }
 
-exportdefault NewEmployee;
+export default NewEmployee;
