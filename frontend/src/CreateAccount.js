@@ -1,33 +1,44 @@
-function CreateAccount(){
-    function SaveAccount(){
-        let request = {
+import  {useState} from 'react';
+
+function NewBankAccount(){
+  //  let [stateData,setStateData]=useState({result:""})
+    let [account,setaccountNumber]=useState({accountNumber:""})
+
+    function processData(data){
+        //alert(data.accountNumber)
+        setaccountNumber(data)
+    }
+
+    function processResponse(response){
+        let promiseJson= response.json()
+        promiseJson.then(processData)
+    }
+
+    function createAccount(){
+        const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                "accno": Object.accno,
-                "name": Object.name
+                "name":document.getElementById("na").value,
+                "country":document.getElementById("country").value,
+                "accountType":document.getElementById("acctype").value
              })
         };
-        fetch('http://127.0.0.1:8000/createAccount',request)
-    }
+        let p = fetch('http://localhost:8000/createAccount', requestOptions)
+        p.then(processResponse)
+        }
+    
     return(
         <>
-            <form>
-                Name: <input type="text" placeholder="Enter name" id="name"></input><br/>
-                Country: <select id="country">
-                    <option value="England">England</option>
-                    <option value="Ireland">Ireland</option>
-                    <option value="Scotland">Scotland</option>
-                    <option value="Wales">Wales</option>
-                </select><br/>
-                Account type: <input type="radio" name="accountType" id="current" value="Current"/>
-                    <label for="current">Current</label>
-                <input type="radio" name="accountType" id="savings" value="Savings"/>
-                    <label for="savings">Savings</label><br/>
-                <input type="Button" value="Create Account" onClick={ ()=> SaveAccount()}/>
-            </form>
+        Banck Account
+        Name <input type="text" id="na"></input> <br/>
+        Country <input type="text" id="country"></input> <br/>
+        AccountType <input type="text" id="acctype"></input> <br/>
+        Account Number:<b>{account.accountNumber}</b>
+        <br></br>
+        <input type="button" value="New Account" onClick={ ()=>createAccount() }></input>
         </>
     )
 }
 
-export default CreateAccount;
+export default NewBankAccount;
