@@ -1,82 +1,46 @@
-let express = require("express");
-let server = express();
-let mysql = require("mysql");
+let express=require("express")
+let cors=require("cors")
+let mysql=require("mysql")
 let bodyparser=require("body-parser")
+let server=express()
+
 server.use(bodyparser.json())
 server.use(bodyparser.urlencoded({ extended: true }));
+server.use(cors())
 
-let db = mysql.createConnection({
+let db=mysql.createConnection(
+{
     host:"localhost",
     user:"root",
     password:"root",
-    database:"nbs2"
+    database:"nbs1"
 });
 
-db.connect();
+db.connect()
 
-server.get("/addEmployee",function(re,res){
-    res.render("form.ejs")
-})
-
-server.post("/saveEmployee",function(req,res){
-    let empno=req.body.empno
-    let name=req.body.ename
-    let salary=req.body.esal
-    let dept=req.body.edept
-    let insertquery=`insert into employees values(${empno},'${name}',${salary},'${dept}')`
-    db.query(insertquery,function(err,data){
-        console.log(err)
-        db.query("select * from employees",function(err,records){
-            res.render("employeeslist.ejs",{employees:records})
-            res.end()
-        })
+server.get("/allEmployees",(req,res)=>{
+    db.query("Select * from employees",function(err,results){
+        res.json(results)
+        res.end()
     })
 })
 
-server.get("/", function(req,res){
-    res.render("homepage.ejs");
-    res.end()
-})
+server.post("/saveEmployee",(req,res)=>{
+    let empno = req.body.empno
+    let ename = req.body.ename
+    let esal  = req.body.salary
+    let edept = req.body.dept
 
-server.get("/allemployees", function(req,res){
-    db.query("select * from employees", function(err, data){
-    res.render("employeelist.ejs", {employees:data});
-    res.end()
-   })
-})
+    let sqlInsert=`insert into employees values(${empno},'${ename}',${esal},'${edept}')`
+    //let sqlInsert=` insert into employees values(${req.body.empno},'${req.body.ename}',${req.body.salary},'${req.body.dept}')`
 
-server.get("/departmentEmployees/:dept", function(req,res){
-    let sql = "select * from employees where department='"+req.params.dept+"'"
-    db.query(sql, function(err, data){
-    res.render("employeelist.ejs", {employees:data});
-    res.end()
-   })
-})
-
-server.get("/departments", function(req,res){
-    db.query("select distinct department from employees", function(err, data){
-    res.render("departments.ejs", {deptName:data});
-    res.end()
+    db.query(sqlInsert,function(err,result){
+        if(err){
+            res.json({"result":"error"})
+        }else{
+            res.json({"result":"done"})
+        }
     })
 })
 
-server.get("/deleteEmployee/:empno", function(req,res){
-    let deleteSQL="delete from employees where empno="+req.params.empno
-    db.query(deleteSQL,function(err, data){
-
-        db.query("select * from employees",function(err, data){
-            res.render("employeelist.ejs",{employees:data})
-            res.end()
-        })
-    })
-})
-
-server.get("/show", function(req,res){
-    db.query("select * from employees", function(err,data){
-        console.log(data)
-    })
-    res.write("Hello")
-    res.end()
-});
-
-server.listen(3000)
+server.listen(8000)
