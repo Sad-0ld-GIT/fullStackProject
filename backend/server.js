@@ -25,6 +25,13 @@ server.get("/allEmployees",(req,res)=>{
     })
 })
 
+server.get("/allAccounts",(req,res)=>{
+    db.query("Select * from bank",function(err,results){
+        res.json(results)
+        res.end()
+    })
+})
+
 server.post("/saveEmployee",(req,res)=>{
     let empno = req.body.empno
     let ename = req.body.ename
