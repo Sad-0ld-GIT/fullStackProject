@@ -17,13 +17,13 @@ function ShowAllEmployees(){
   return(
     <>
       <h1>List of employees({records.length})</h1>
-      <input type="button" value="Show Employees" onClick={ ()=>getEmployees() }></input>
+      <input type="button" value="Show Employees" onClick={ ()=>getEmployees() }/>
       <table>
         {
           records.map( (rec) =>
           <tr>
           <td>{rec.empno} </td><td>{rec.name} </td>
           <td>{rec.salary} </td>                
-          </input>
+        </table>
     ) 
 }
