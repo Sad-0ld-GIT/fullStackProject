@@ -23,14 +23,7 @@ server.get("/allEmployees",(req,res)=>{
         res.json(results)
         res.end()
     })
-})
-
-server.get("/allAccounts",(req,res)=>{
-    db.query("Select * from bank",function(err,results){
-        res.json(results)
-        res.end()
-    })
-})
+}) 
 
 server.post("/saveEmployee",(req,res)=>{
     let empno = req.body.empno
@@ -46,7 +39,6 @@ server.post("/saveEmployee",(req,res)=>{
             res.json({"result":"error"})
         }else{
             res.json({"result":"done"})
-        }
     })
 })
 
@@ -54,16 +46,20 @@ server.post("/createAccount",(req,res)=>{
     let name= req.body.name
     let country = req.body.country.substring(0,1)
     let accountType = req.body.accountType.substring(0,1)
-
     let findAccountNumberSQL=`select concat('${accountType}','${country}', ifnull( lpad(max(substr(accno,3,3)) + 1,3,'0'),'001')) as newAccno from bank where substr(accno,2,1)='${country}'`;
+
     db.query(findAccountNumberSQL,function(err,result){
         if(err){
             console.log(err)
         }else{
-            let insertquery=`insert into bank values('${result[0].newAccno}','${name}')`
+            let newAccno=result[0].newAccno
+            let insertquery=`insert into bank values('${newAccno}','${name}')`
             db.query(insertquery,function(err,result){
                 if (err){
                     console.log(err)
+                }else{
+                    res.json({"accountNumber":newAccno})
+                    res.end()
                 }
             })
         }
