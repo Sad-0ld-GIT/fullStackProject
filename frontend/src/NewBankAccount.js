@@ -30,7 +30,7 @@ function NewBankAccount(){
     
     return(
         <>
-        Banck Account
+        <h3>Bank Account:</h3>
         Name <input type="text" id="na"></input> <br/>
         Country <input type="text" id="country"></input> <br/>
         AccountType <input type="text" id="acctype"></input> <br/>

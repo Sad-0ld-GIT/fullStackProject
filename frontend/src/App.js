@@ -2,7 +2,7 @@
 import './App.css';
 // import ShowAllEmployees from './ShowAllEmployees';
 // import NewEmployee from './NewEmployee';
-import CreateAccount from './CreateAccount';
+import NewBankAccount from './NewBankAccount';
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
       <h1> Welcome to NBS </h1>
       {/* <NewEmployee/> */}
       {/* <ShowAllEmployees/> */}
-      <CreateAccount/>
+      <NewBankAccount/>
     </div>
   );
 }

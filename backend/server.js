@@ -39,6 +39,7 @@ server.post("/saveEmployee",(req,res)=>{
             res.json({"result":"error"})
         }else{
             res.json({"result":"done"})
+        }
     })
 })
 
